@@ -56,4 +56,26 @@ class BasicSpockTest extends Specification {
             false | !true
             45/3  | 5 * 3
     }
+
+    /**
+     *
+     * computedValue ==  computer.computeValue(a) + computer.computeValue(b + computer.computeValue(c))
+     * |             |   |        |            |  | |        |            | | |        |            |
+     * 5             |   |        2            2  9 |        7            3 7 |        4            4
+     *               |   |                          |                         com.rhjensen.examples.ComputeValue@35e28ef6
+     *               |   |                          com.rhjensen.examples.ComputeValue@35e28ef6
+     *               |   com.rhjensen.examples.ComputeValue@35e28ef6
+     *               false
+     *
+     */
+    def "Complex expressions show the value of the detailed message"() {
+        def computer = new ComputeValue()
+
+        expect:
+            computedValue ==  computer.computeValue(a) + computer.computeValue(b + computer.computeValue(c))
+        where:
+            a | b | c | computedValue
+            1 | 1 | 1 | 3
+//            2 | 3 | 4 | 5
+    }
 }
